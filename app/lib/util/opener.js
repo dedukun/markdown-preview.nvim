@@ -36,7 +36,20 @@ module.exports = function opener(args, tool) {
             break;
         }
         default: {
-            command = tool || 'xdg-open';
+            // command = tool || 'xdg-open';
+            if (tool) {
+                let tool_splited = tool.split(' ');
+                if( tool_splited.length > 1) {
+                    command = tool_splited[0];
+                    args.unshift(tool_splited.slice(1,tool_splited.length));
+                }
+                else {
+                    command = tool;
+                }
+            }
+            else{
+                command = 'xdg-open';
+            }
             break;
         }
     }
