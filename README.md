@@ -36,8 +36,10 @@ Install with [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```vim
 " If you don't have nodejs and yarn
-" use pre build
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+" use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
+" see: https://github.com/iamcco/markdown-preview.nvim/issues/50
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
 
 " If you have nodejs and yarn
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -48,6 +50,12 @@ Or install with [dein](https://github.com/Shougo/dein.vim):
 ```vim
 call dein#add('iamcco/markdown-preview.nvim', {'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
 					\ 'build': 'sh -c "cd app & yarn install"' })
+```
+
+Or with minpac:
+
+```vim
+call minpac#add('iamcco/markdown-preview.nvim', {'do': 'call mkdp#util#install()'})
 ```
 
 Config:
@@ -109,6 +117,7 @@ let g:mkdp_browserfunc = ''
 "   relative: mean the cursor position alway show at the relative positon of the preview page
 " hide_yaml_meta: if hide yaml metadata, default is 1
 " sequence_diagrams: js-sequence-diagrams options
+" content_editable: if enable content editable for preview page, default: v:false
 let g:mkdp_preview_options = {
     \ 'mkit': {},
     \ 'katex': {},
@@ -118,7 +127,8 @@ let g:mkdp_preview_options = {
     \ 'sync_scroll_type': 'middle',
     \ 'hide_yaml_meta': 1,
     \ 'sequence_diagrams': {},
-    \ 'flowchart_diagrams': {}
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false
     \ }
 
 " use a custom markdown style must be absolute path
@@ -317,6 +327,11 @@ Or
 Question: Why is the synchronised scrolling lagging?
 
 Answer: set `updatetime` to a small number, for instance: `set updatetime=100`
+
+*WSL 2 issue*: Can not open browser when using WSL 2 with terminal Vim.
+
+> if you are using Ubuntu you can install xdg-utils using `sudo apt-get install -y xdg-utils`
+> checkout [issue 199](https://github.com/iamcco/markdown-preview.nvim/issues/199) for more detail.
 
 ### About vim support
 
